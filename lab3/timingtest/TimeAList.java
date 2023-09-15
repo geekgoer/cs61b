@@ -1,5 +1,6 @@
 package timingtest;
 import edu.princeton.cs.algs4.Stopwatch;
+import org.checkerframework.checker.units.qual.A;
 
 /**
  * Created by hug.
@@ -23,5 +24,24 @@ public class TimeAList {
 
     public static void timeAListConstruction() {
         // TODO: YOUR CODE HERE
+        AList<Integer> Ns = new AList<>();
+        AList<Double> times = new AList<>();
+        AList<Integer> opCounts = new AList<>();
+        int [] testNum = {1000,2000,4000,8000,16000,32000,64000,128000};
+        for(int i = 0;i < testNum.length;i++)
+            Ns.addLast(testNum[i]);
+        for(int i = 0;i < testNum.length ;i++){
+            int needTest = testNum[i];
+            AList<Integer> testOpject = new AList<>();
+            Stopwatch sw = new Stopwatch();
+            int ops = 0;
+            for(int j =0;j < needTest ;j++) {
+                testOpject.addLast(j);
+                ops++;
+            }
+            times.addLast(sw.elapsedTime());
+            opCounts.addLast(ops);
+        }
+        printTimingTable(Ns,times,opCounts);
     }
 }
