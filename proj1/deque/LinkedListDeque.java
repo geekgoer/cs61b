@@ -110,12 +110,10 @@ public class LinkedListDeque<T> implements Deque<T>{
         return size;
     }
 
-    @Override
     public Iterator<T> iterator() {
         return new LinkedListDequeIterator();
     }
 
-    @Override
     public boolean equals(Object o){
         return o instanceof LinkedListDeque;
     }

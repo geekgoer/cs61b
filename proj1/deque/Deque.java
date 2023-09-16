@@ -11,6 +11,5 @@ public interface Deque<T> {
     T removeLast();
     T get(int p);
     int size();
-    public Iterator<T> iterator();
-    public boolean equals(Object o);
+
 }

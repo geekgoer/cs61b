@@ -16,6 +16,9 @@ public class ArrayDeque<T> implements Deque<T> {
         items = (T[]) new Object[8];
 
     }
+    public boolean equals(Object o){
+        return o instanceof ArrayDeque;
+    }
     public int getFirst(){
         return first;
     }
@@ -101,7 +104,6 @@ public class ArrayDeque<T> implements Deque<T> {
         return size;
     }
 
-    @Override
     public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
