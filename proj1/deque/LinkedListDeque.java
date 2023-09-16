@@ -120,7 +120,7 @@ public class LinkedListDeque<T> implements Deque<T>{
         return o instanceof LinkedListDeque;
     }
 
-    private class LinkedListDequeIterator implements Iterator{
+    private class LinkedListDequeIterator implements Iterator<T>{
         IntNode<T> p ;
 
         public LinkedListDequeIterator(){

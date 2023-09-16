@@ -103,10 +103,10 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new ArrayDequeIterator();
     }
 
-    private class ArrayDequeIterator<T> implements Iterator<T>{
+    private class ArrayDequeIterator implements Iterator<T>{
         int idx = first+1;
         @Override
         public boolean hasNext() {
@@ -115,7 +115,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
         @Override
         public T next() {
-            T t = (T) items[idx];
+            T t =  items[idx];
             idx++;
             return t;
         }
