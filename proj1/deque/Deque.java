@@ -5,7 +5,9 @@ import java.util.Iterator;
 public interface Deque<T> {
     void addFirst(T x);
     void addLast(T x);
-    boolean isEmpty();
+    default boolean isEmpty(){
+        return size() == 0;
+    }
     void printDeque();
     T removeFirst();
     T removeLast();

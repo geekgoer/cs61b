@@ -55,10 +55,10 @@ public class ArrayDeque<T> implements Deque<T> {
     }
 
     //TODO
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
+//    @Override
+//    public boolean isEmpty() {
+//        return size == 0;
+//    }
 
     @Override
     public void printDeque() {

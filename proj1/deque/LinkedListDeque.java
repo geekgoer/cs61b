@@ -55,10 +55,10 @@ public class LinkedListDeque<T> implements Deque<T>{
         sentinel.prev = p;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return sentinel.next == sentinel;
-    }
+//    @Override
+//    public boolean isEmpty() {
+//        return sentinel.next == sentinel;
+//    }
 
     @Override
     public void printDeque() {
