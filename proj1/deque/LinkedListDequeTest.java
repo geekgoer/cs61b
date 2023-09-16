@@ -1,12 +1,30 @@
 package deque;
 
 import  org.junit.Test;
+
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
 
+
+    @Test
+    public void iteratorTest(){
+        LinkedListDeque<Integer> lld = new LinkedListDeque<>();
+        for(int i = 0;i < 10;i++)
+            lld.addLast(i);
+        Iterator<Integer> it = lld.iterator();
+//        System.out.println("has? "+it.hasNext());
+        while(it.hasNext()){
+            for(int i = 0; i< 10 ;i++){
+                assertEquals(i,(int)it.next());
+            }
+//            System.out.println(it.next());
+        }
+    }
     @Test
     /** Adds a few things to the list, checking isEmpty() and size() are correct,
      * finally printing the results.
