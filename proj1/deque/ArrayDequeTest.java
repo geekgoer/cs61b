@@ -1,7 +1,9 @@
 package deque;
 
+import edu.princeton.cs.algs4.StdRandom;
 import  org.junit.Test;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -10,6 +12,34 @@ import static org.junit.Assert.*;
 /** Performs some basic linked list tests. */
 public class ArrayDequeTest {
 
+    @Test
+    public void randomAddFRemoveFIsE(){
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+        LinkedListDeque<Integer> lld  = new LinkedListDeque<>();
+//        ad.addFirst(1);
+//        Integer aw = ad.removeFirst();
+//        ad.addFirst(2);
+//        Integer w = lld.removeFirst();
+//        ad.removeFirst();
+//        ad.addFirst(3);
+//        assertEquals(aw,w);
+        for(int i = 0;i < 100000;i++){
+            int op =  StdRandom.uniform(0,3);
+            switch (op){
+                case 0:
+                    ad.addFirst(i);
+                    lld.addFirst(i);
+                    break;
+                case 1:
+                    Integer a = ad.removeFirst();
+                    Integer b = lld.removeFirst();
+                    assertEquals(a,b);
+                    break;
+                case 2:
+                    assertEquals(ad.isEmpty(),lld.isEmpty());
+            }
+        }
+    }
     @Test
     public void iteratorTest(){
         ArrayDeque<Integer> lld = new ArrayDeque<>();
