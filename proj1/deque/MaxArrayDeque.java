@@ -14,12 +14,10 @@ public class MaxArrayDeque<T> extends ArrayDeque<T>{
     public T max(Comparator<T> c){
         if(isEmpty())
             return null;
-        int maxIndex = getFirst()+1;
-        for (int i = getFirst()+1; i < getLast(); i++) {
-            if (c.compare(get(i), get(maxIndex)) > 0) {
+        int maxIndex = 0;
+        for(int i = 1;i < size() ;i++)
+            if(c.compare(get(i),get(maxIndex)) > 0)
                 maxIndex = i;
-            }
-        }
         return get(maxIndex);
     }
 }

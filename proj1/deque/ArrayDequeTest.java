@@ -46,7 +46,7 @@ public class ArrayDequeTest {
         for(int i = 0;i < 5;i++)
             lld.addLast(i);
         Iterator<Integer> it = lld.iterator();
-        System.out.println("has? "+it.hasNext());
+//        System.out.println("has? "+it.hasNext());
         while(it.hasNext()){
             for(int i = 0; i< 5 ;i++){
                 assertEquals(i,(int)it.next());
@@ -137,11 +137,11 @@ public class ArrayDequeTest {
         ArrayDeque<Boolean> lld3 = new ArrayDeque<Boolean>();
 
         lld1.addFirst("string");
-        lld2.addFirst(3.14159);
         lld3.addFirst(true);
+        lld2.addFirst(3.14159);
 
-        String s = lld1.removeFirst();
         double d = lld2.removeFirst();
+        String s = lld1.removeFirst();
         boolean b = lld3.removeFirst();
 
     }
