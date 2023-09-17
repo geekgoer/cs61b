@@ -2,8 +2,8 @@ package deque;
 
 import java.util.Iterator;
 
-//TODO try circular arrays
-public class ArrayDeque<T> implements Deque<T> {
+//TODO try circular arrays                      //important
+public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
     private T[] items ;
     private int first ;
     private int last ;
@@ -17,7 +17,24 @@ public class ArrayDeque<T> implements Deque<T> {
 
     }
     public boolean equals(Object o){
-        return o instanceof ArrayDeque;
+        if(!(o instanceof Deque)){
+            return false;
+        }
+        Deque deque = (Deque) o;
+        if(deque.size() != this.size())
+            return false;
+        if(o instanceof LinkedListDeque)
+            for(int i = 0;i < size;i++){
+                if(! this.get(i+getFirst()+1).equals(deque.get(i)))
+                    return false;
+            }
+        else if(o instanceof ArrayDeque) {
+            deque.ArrayDeque ad_deq = (deque.ArrayDeque) deque;
+            for(int i = getFirst()+1 ;i < getLast(); i++)
+                if(! get(i).equals(deque.get(i)))
+                    return false;
+        }
+        return true;
     }
     public int getFirst(){
         return first;

@@ -1,5 +1,7 @@
 package deque;
 
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdRandom;
 import  org.junit.Test;
 
 import java.util.Iterator;
@@ -10,7 +12,71 @@ import static org.junit.Assert.*;
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
 
+    @Test
+    public void equalTest(){
+        LinkedListDeque<String> lld = new LinkedListDeque<>();
+        ArrayDeque<String> ad = new ArrayDeque<>();
+        for(int i = 1 ;i < 1000;i++){
+            int oper = StdRandom.uniform(0,2);
+            switch (oper){
+                case 0:
+                    lld.addFirst(Integer.toString(i));
+                    ad.addFirst(Integer.toString(i));
+                    assertTrue(lld.equals(ad));
+                    break;
+                case 1:
+                    lld.addLast(Integer.toString(i));
+                    ad.addLast(Integer.toString(i));
+                    assertTrue(ad.equals(lld));
+                    break;
+            }
+        }
+    }
+    @Test
+    public void recursiveGetTest(){
+        LinkedListDeque<Integer> lld = new LinkedListDeque<>();
+        lld.get(0);
+        lld.get(3);
+        lld.addLast(-1);
 
+        for(int i = 1 ;i < 1000;i++){
+            int oper = StdRandom.uniform(0,3);
+            switch (oper){
+                case 0:
+                    lld.addFirst(i);
+                    break;
+                case 1:
+                    lld.addLast(i);
+                    break;
+                case 2:
+                    int randomPos = StdRandom.uniform(0,i);
+                    Integer a = lld.get(randomPos);
+                    Integer b = lld.getRecursive(randomPos);
+                    assertEquals(a,b);
+            }
+        }
+    }
+    @Test
+    public void getTest(){
+        LinkedListDeque<Integer> lld = new LinkedListDeque<>();
+        for(int i = 0 ;i < 1000;i++){
+            lld.addLast(i);
+        }
+        for(int i = 0;i < 1000;i++){
+            System.out.println(lld.get(i));
+            assertEquals(i,(int) lld.get(i));
+        }
+    }
+    @Test
+    public void random_add_remove(){
+        LinkedListDeque<Integer> wLinkedListDeque = new LinkedListDeque<>();
+        wLinkedListDeque.addFirst(0);
+        wLinkedListDeque.addFirst(1);
+        wLinkedListDeque.removeLast()     ;
+        wLinkedListDeque.removeLast()      ;
+        wLinkedListDeque.addFirst(4);
+        wLinkedListDeque.removeLast();
+    }
     @Test
     public void iteratorTest(){
         LinkedListDeque<Integer> lld = new LinkedListDeque<>();
