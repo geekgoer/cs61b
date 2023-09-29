@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author BeYC
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -112,7 +112,15 @@ public class Model extends Observable {
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
+        // changed local variable to true
+        int len = this.board.size();
+        int [][] backup = new int[len][len];
+        for(int i = 0 ;i < len ; i++)
+            for(int j = 0;j < len ;j++) {
+                if(this.board.tile(i,j) != null)
+                    backup[i][j] = this.board.tile(i, j).value();
+            }
+
 
         checkGameOver();
         if (changed) {
@@ -138,6 +146,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        int len = b.size();
+        for(int i = 0;i < len;i++)
+            for(int j = 0;j < len ;j++){
+                Tile t = b.tile(i,j);
+                if(t == null)
+                    return true;
+            }
         return false;
     }
 
@@ -148,6 +163,13 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        int len = b.size();
+        for(int i = 0 ;i < len ;i++)
+            for(int j = 0;j < len;j++){
+                Tile t = b.tile(i,j);
+                if(t != null && t.value() == MAX_PIECE)
+                    return true;
+            }
         return false;
     }
 
@@ -159,6 +181,21 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if(emptySpaceExists(b)) return true;
+        int []vx = new int[]{-1,0,1,0};
+        int []vy = new int[]{0,1,0,-1};
+        int len = b.size();
+        for(int i = 0;i < len ; i++)
+            for(int j= 0;j < len ;j++){
+                for(int k = 0;k < 4;k++){
+                    int nx = i + vx[k] , ny = j + vy[k];
+                    if(nx < 0 || nx >= len || ny < 0 || ny >= len)  continue;
+                    Tile tn = b.tile(nx,ny);
+                    Tile tb = b.tile(i,j);
+                    if(tn.value() == tb.value())
+                        return true;
+                }
+            }
         return false;
     }
 
