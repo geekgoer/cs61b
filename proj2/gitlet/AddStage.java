@@ -5,29 +5,62 @@ import java.util.*;
 
 import static gitlet.Utils.*;
 import static gitlet.Repository.*;
+import static gitlet.MyUtils.*;
 public class AddStage implements Serializable {
-    // File -> Blob
-    private final Map<File,Blob> fileMapBlob = new TreeMap<>();
-    // FileID
+    // <File , blob>
+    private final Map<File,Blob> addedMap = new TreeMap<>();
+    // <filename>
     private final Set<String> removeSet = new HashSet<>();
     void add(File file){
-        if(fileMapBlob.get(file) != null){
-            Blob blob = fileMapBlob.get(file);
+        Blob blob = null;
+        AddStage addStage1 = readStage();
+        if(addedMap.get(file) != null){
+            blob = addedMap.get(file);
+            deleteBlobInFile(blob);
             blob.setContent(file);
             File headBranch = getHeadBranch();
             String commitId = readContentsAsString(headBranch);
             if(commitId.equals(blob.getId())){
-                fileMapBlob.remove(file);
+                addedMap.remove(file);
             }
+
         }else{
-            Blob blob = new Blob(file);
-            fileMapBlob.put(file,blob);
+            blob = new Blob(file);
+            addedMap.put(file,blob);
         }
+
+        // add blob to objfile to store
+        File tarFile = join(objects_DIR,blob.getId());
+        if(!tarFile.exists())
+            createFile(tarFile);
+        writeObject(tarFile,blob);
+    }
+
+    // read stage from file
+    AddStage readStage(){
+        File file = join(addstage_DIR,)
+        return readObject()
+    }
+
+    // create file
+    static void createFile(File file){
+        try {
+            file.createNewFile();
+        }catch (IOException e){
+            exit("opp ! create file Failed.");
+        }
+    }
+
+    // delete blob in File
+    static void deleteBlobInFile(Blob blob){
+        String blobId = blob.getId();
+        File file = join(objects_DIR,blobId);
+        restrictedDelete(file);
     }
 
     // return fileMapBlob
     Map<File,Blob> getAdd(){
-        return fileMapBlob;
+        return addedMap;
     }
 
     // return removeSet
@@ -37,11 +70,16 @@ public class AddStage implements Serializable {
 
     // return if add-stage has file
     boolean hasAdded(File file){
-        return fileMapBlob.get(file) != null;
+        return addedMap.get(file) != null;
     }
 
     // check if add-stage or remove stage not empty
     boolean anyChanged(){
-        return (!fileMapBlob.isEmpty() || !removeSet.isEmpty());
+        return (!addedMap.isEmpty() || !removeSet.isEmpty());
+    }
+
+    // after commit , clean all add-stage and remove-stage
+    void clean(){
+        // TODO
     }
 }

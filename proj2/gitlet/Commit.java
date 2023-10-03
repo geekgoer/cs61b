@@ -29,16 +29,17 @@ public class Commit implements Serializable {
     private String message;
     private String id;
     private Date timeStamp;
-    private List<Commit> parent;
+    private List<Commit> parents;
 //    private List<String> blobs;
-    private final Map<File,Blob> blobs;
+    // <filename , blobId>
+    private final Map<String,String> blobs;
     public static String getId(Commit commit){
         return commit.generate_SHA1();
     }
     public Commit(){
         this.message = "initial commit";
         this.timeStamp = new Date(0);
-        this.parent = new LinkedList<>();
+        this.parents = new LinkedList<>();
         // blobid
         this.blobs = new TreeMap<>();
         this.id = generate_SHA1();
@@ -47,21 +48,22 @@ public class Commit implements Serializable {
     public Commit(String msg , List<Commit> parents,AddStage addStage){
         this.message = msg;
         this.timeStamp = new Date();
-        this.parent = parent;
+        this.parents = parents;
         Commit parent = parents.get(0);
         this.blobs = parent.blobs;
         Map<File,Blob> AddMap = addStage.getAdd();
         Set<String > removeSet = addStage.getRemove();
         for(Map.Entry<File,Blob> item : AddMap.entrySet()){
-            File key = item.getKey();
-            Blob blob = item.getValue();
-            blobs.put(key,blob);
+            String key = item.getKey().getName();
+            String blobId = item.getValue().getId();
+            blobs.put(key,blobId);
         }
         for(String removeFileName : removeSet){
-
+            blobs.remove(removeFileName);
         }
+        addStage.clean();
     }
-    public Map<File, Blob> getBLobs(){
+    public Map<String, String> getBLobs(){
         return blobs;
     }
     public String getId(){
@@ -79,6 +81,6 @@ public class Commit implements Serializable {
     }
     String generate_SHA1(){
 //        System.out.println(this.message+this.timeStamp.toString());
-        return sha1(this.blobs.toString(),this.parent.toString(),this.message,StdDateToTimeStamp(this.timeStamp));
+        return sha1(this.blobs.toString(),this.parents.toString(),this.message,StdDateToTimeStamp(this.timeStamp));
     }
 }

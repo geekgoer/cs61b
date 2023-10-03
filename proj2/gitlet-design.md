@@ -1,11 +1,12 @@
 # Gitlet Design Document
 
-**Name**:
+**BeYC**:
 
 ## Classes and Data Structures
 
-### Class 1
-
+### Addstage
+1. addedMap -> Map<String,String>  (<filename,blobId>)
+2. removeSet -> Set<String> (<filename>)
 #### Fields
 
 1. Field 1
