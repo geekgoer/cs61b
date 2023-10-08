@@ -25,7 +25,7 @@ public class Main {
 
             }
         }
-        if(args[0] == null){
+        if(args.length == 0){
             exit("Please enter a command.");
         }
         switch(args[0]) {
@@ -41,16 +41,37 @@ public class Main {
                 break;
             case "commit":
                 Repository.checkInit();
-                validArgsNum(args,3);
-                if(args[2] == null)
+                validArgsNum(args,2);
+                if(args[1] == null || args[1].equals(""))
                     exit("Please enter a commit message.");
-                Repository.commit(args[2]);
+                Repository.commit(args[1]);
                 break;
             case "rm":
                 Repository.checkInit();
                 validArgsNum(args,2);
                 Repository.checkCanRemove(args[1]);
                 Repository.rm(args[1]);
+                break;
+            case "log":
+                Repository.checkInit();
+                validArgsNum(args,1);
+                Repository.log();
+                break;
+            case "global-log":
+                Repository.checkInit();
+                validArgsNum(args,1);
+                Repository.global_log();
+                break;
+            case "find":
+                Repository.checkInit();
+                validArgsNum(args,2);
+                if(!Repository.find(args[1]))
+                    exit("Found no commit with that message.");
+                break;
+            case "status":
+                Repository.checkInit();
+                validArgsNum(args,1);
+                Repository.status();
                 break;
             default:
                 System.out.println("No command with that name exists.");

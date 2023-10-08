@@ -11,7 +11,6 @@ public class Blob implements Serializable {
     private String BlobId;
     private String pathName;
     public Blob(File file){
-
         // pathName 不包括文件名
         pathName = file.getPath();
         contents = readContents(file);

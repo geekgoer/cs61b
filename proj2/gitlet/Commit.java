@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.File;
 
+import static gitlet.Repository.cleanStage;
 import static gitlet.Utils.*;
 
 /** Represents a gitlet commit object.
@@ -28,7 +29,7 @@ public class Commit implements Serializable {
     /** The message of this Commit. */
     private String message;
     private String id;
-    private Date timeStamp;
+    private String timeStamp;
     private List<Commit> parents;
 //    private List<String> blobs;
     // <filename , blobId>
@@ -38,7 +39,7 @@ public class Commit implements Serializable {
     }
     public Commit(){
         this.message = "initial commit";
-        this.timeStamp = new Date(0);
+        this.timeStamp = StdDateToTimeStamp(new Date(0));
         this.parents = new LinkedList<>();
         // blobid
         this.blobs = new TreeMap<>();
@@ -47,7 +48,7 @@ public class Commit implements Serializable {
 
     public Commit(String msg , List<Commit> parents,AddStage addStage){
         this.message = msg;
-        this.timeStamp = new Date();
+        this.timeStamp = StdDateToTimeStamp(new Date());
         this.parents = parents;
         Commit parent = parents.get(0);
         this.blobs = parent.blobs;
@@ -61,7 +62,11 @@ public class Commit implements Serializable {
         for(String removeFileName : removeSet){
             blobs.remove(removeFileName);
         }
-        addStage.clean();
+        this.id = generate_SHA1();
+        cleanStage();
+    }
+    public String getCommitBlobId(String fileName){
+        return blobs.get(fileName);
     }
     public Map<String, String> getBLobs(){
         return blobs;
@@ -69,10 +74,18 @@ public class Commit implements Serializable {
     public String getId(){
         return this.id;
     }
-
+    public String getDate(){
+        return this.timeStamp;
+    }
+    public String getMessage(){
+        return this.message;
+    }
+    public List<Commit> getParents(){
+        return this.parents;
+    }
     /* check the file equal to any blobs of Blobs*/
     public boolean checkWithinBlobs(File file){
-        return blobs.get(file) != null;
+        return blobs.get(file.getName()) != null;
     }
 
     private static String StdDateToTimeStamp(Date d){
@@ -81,6 +94,6 @@ public class Commit implements Serializable {
     }
     String generate_SHA1(){
 //        System.out.println(this.message+this.timeStamp.toString());
-        return sha1(this.blobs.toString(),this.parents.toString(),this.message,StdDateToTimeStamp(this.timeStamp));
+        return sha1(this.blobs.toString(),this.parents.toString(),this.message,this.timeStamp);
     }
 }
