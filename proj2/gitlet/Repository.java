@@ -322,8 +322,10 @@ public class Repository {
     // get LCA of two commits
     static Commit getSplit(Commit othCommit , Commit curCommit){
         Map<String,Boolean> upTick = new TreeMap<>();
-        while(othCommit.getParents().size() > 0){
+        while( true ){
             upTick.put(othCommit.getId(),true);
+            if(othCommit.getParents().size() == 0)
+                break;
             othCommit = othCommit.getParents().get(0);
         }
         while(upTick.get(curCommit.getId())==null){
