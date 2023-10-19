@@ -73,6 +73,46 @@ public class Main {
                 validArgsNum(args,1);
                 Repository.status();
                 break;
+            case "branch":
+                Repository.checkInit();
+                validArgsNum(args,2);
+                Repository.branch(args[1]);
+                break;
+            case "checkout":
+                Repository.checkInit();
+                if(args.length<2 || args.length > 4){
+                    exit("Incorrect operands.");
+                }else if(args.length == 2){
+                    //java gitlet.Main checkout [branch name]
+                    Repository.checkoutBranch(args[1]);
+                }else if(args.length == 3){
+                    //java gitlet.Main checkout -- [file name]
+                    if(!args[1].equals("--"))
+                        exit("Incorrect operands.");
+                    Repository.checkout_headCommitFile(args[2]);
+                }else if(args.length == 4){
+                    //java gitlet.Main checkout [commit id] -- [file name]
+                    if(!args[2].equals("--")){
+                        exit("Incorrect operands.");
+                    }
+                    Repository.checkout_anyCommitIdFile(args[1],args[3]);
+                }
+                break;
+            case "rm-branch":
+                Repository.checkInit();
+                validArgsNum(args,2);
+                Repository.rmBranch(args[1]);
+                break;
+            case "reset":
+                Repository.checkInit();
+                validArgsNum(args,2);
+                Repository.reset(args[1]);
+                break;
+            case "merge":
+                Repository.checkInit();
+                validArgsNum(args,2);
+                Repository.merge(args[1]);
+                break;
             default:
                 System.out.println("No command with that name exists.");
                 break;

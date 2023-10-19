@@ -33,7 +33,7 @@ public class Commit implements Serializable {
     private List<Commit> parents;
 //    private List<String> blobs;
     // <filename , blobId>
-    private final Map<String,String> blobs;
+    private final HashMap<String,String> blobs;
     public static String getId(Commit commit){
         return commit.generate_SHA1();
     }
@@ -42,7 +42,7 @@ public class Commit implements Serializable {
         this.timeStamp = StdDateToTimeStamp(new Date(0));
         this.parents = new LinkedList<>();
         // blobid
-        this.blobs = new TreeMap<>();
+        this.blobs = new HashMap<>();
         this.id = generate_SHA1();
     }
 
@@ -51,7 +51,8 @@ public class Commit implements Serializable {
         this.timeStamp = StdDateToTimeStamp(new Date());
         this.parents = parents;
         Commit parent = parents.get(0);
-        this.blobs = parent.blobs;
+        this.blobs = new HashMap<String,String>();
+        this.blobs.putAll(parent.getBLobs());
         Map<File,Blob> AddMap = addStage.getAdd();
         Set<String > removeSet = addStage.getRemove();
         for(Map.Entry<File,Blob> item : AddMap.entrySet()){
@@ -68,8 +69,10 @@ public class Commit implements Serializable {
     public String getCommitBlobId(String fileName){
         return blobs.get(fileName);
     }
-    public Map<String, String> getBLobs(){
-        return blobs;
+
+    // deep copy
+    public HashMap<String, String> getBLobs(){
+        return this.blobs;
     }
     public String getId(){
         return this.id;

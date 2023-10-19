@@ -17,47 +17,27 @@ public class AddStage implements Serializable {
         this.removeSet = new TreeSet<>();
     }
 
-    /*
-    * 1. Staging an already-staged file overwrites the previous entry in the staging
-    *  area with the new contents.
-    * 2. If the current working version of the file is identical to the version in the current
-    * commit, do not stage it to be added, and remove it from the staging area if it is already there
-    * 3. The file will no longer be staged for removal (see gitlet rm), if it was at the time of the command.
-    * */
-    static void add(File file){
-        Blob blob = null;
-        AddStage addStage = readStage();
-
-        // stage There are similarities in the blob
-        if(addStage.addedMap.get(file) != null){
-            blob = addStage.addedMap.get(file);
-            deleteBlobInFile(blob);
-            // 重写
-            Blob newblob = new Blob(file);
-
-            File headBranch = getHeadBranch();
-            String commitId = readContentsAsString(headBranch);
-            Commit commit = getCommitById(commitId);
-            assert commit != null;
-            String commitblobId = commit.getCommitBlobId(file.getName());
-            // There are similarities in the blob
-            if(commitblobId.equals(newblob.getId())){
-                addStage.addedMap.remove(file);
-            }
-            // Whether the source file is deleted or not, create another one
-            File blobfile = join(objects_DIR,newblob.getId());
-            writeObject(blobfile,newblob);
-        }else{
-            blob = new Blob(file);
-            addStage.addedMap.put(file,blob);
-            File blobfile = join(objects_DIR,blob.getId());
-            writeObject(blobfile,blob);
-            writeObject(addstage_File,addStage);
-        }
-
+    public Map<File, Blob> getAddedMap() {
+        return addedMap;
     }
 
+    public Set<String> getRemoveSet() {
+        return removeSet;
+    }
 
+    public boolean isEmpty(){
+        return  addedMap.isEmpty() && removeSet.isEmpty();
+    }
+
+    // get all fileNames from files
+    List<String> getAddedfileNames(){
+        List<String > res = new ArrayList<>();
+        for(Map.Entry<File,Blob> item:addedMap.entrySet()){
+            String fileName = item.getKey().getName();
+            res.add(fileName);
+        }
+        return res;
+    }
 
     // create file
     static void createFile(File file){
