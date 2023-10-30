@@ -30,6 +30,7 @@ public class TestMyHashMap {
     public static void sanityClearTest(MyHashMap<String, Integer> b) {
         for (int i = 0; i < 455; i++) {
             b.put("hi" + i, 1);
+//            System.out.println(b.get("hi" + i));
             //make sure put is working via containsKey and get
             assertTrue(null != b.get("hi" + i)
                     && b.containsKey("hi" + i));
@@ -92,6 +93,8 @@ public class TestMyHashMap {
 
     public static void sanityPutTest(MyHashMap<String, Integer> b) {
         b.put("hi", 1);
+//        System.out.println(b.containsKey("hi") );
+//        System.out.println(b.get("hi"));
         assertTrue(b.containsKey("hi") && b.get("hi") != null);
     }
 
